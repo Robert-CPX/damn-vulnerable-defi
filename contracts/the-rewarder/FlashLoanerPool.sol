@@ -31,7 +31,7 @@ contract FlashLoanerPool is ReentrancyGuard {
             revert NotEnoughTokenBalance();
         }
 
-        if (!msg.sender.isContract()) {
+        if (!msg.sender.isContract()) {// info: You shouldn't rely on `isContract` to protect against flash loan attacks!
             revert CallerIsNotContract();
         }
 

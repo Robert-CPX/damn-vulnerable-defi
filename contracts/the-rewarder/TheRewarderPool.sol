@@ -29,9 +29,9 @@ contract TheRewarderPool {
     RewardToken public immutable rewardToken;
 
     uint128 public lastSnapshotIdForRewards;
-    uint64 public lastRecordedSnapshotTimestamp;
+    uint64 public lastRecordedSnapshotTimestamp; // info: to record a new round of rewards for current pool
     uint64 public roundNumber; // Track number of rounds
-    mapping(address => uint64) public lastRewardTimestamps;
+    mapping(address => uint64) public lastRewardTimestamps;// info: latest time of reward token minted for an account
 
     error InvalidDepositAmount();
 
@@ -79,7 +79,7 @@ contract TheRewarderPool {
         uint256 amountDeposited = accountingToken.balanceOfAt(msg.sender, lastSnapshotIdForRewards);
 
         if (amountDeposited > 0 && totalDeposits > 0) {
-            rewards = amountDeposited.mulDiv(REWARDS, totalDeposits);
+            rewards = amountDeposited.mulDiv(REWARDS, totalDeposits);// rewards := div(mul(x, y), denominator)
             if (rewards > 0 && !_hasRetrievedReward(msg.sender)) {
                 rewardToken.mint(msg.sender, rewards);
                 lastRewardTimestamps[msg.sender] = uint64(block.timestamp);
