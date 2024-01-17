@@ -8,7 +8,7 @@ import "solady/src/utils/LibSort.sol";
  * @title TrustfulOracle
  * @author Damn Vulnerable DeFi (https://damnvulnerabledefi.xyz)
  * @notice A price oracle with a number of trusted sources that individually report prices for symbols.
- *         The oracle's price for a given symbol is the median price of the symbol over all sources.
+ *         The oracle's price for a given symbol is the median price of the symbol over all sources.??
  */
 contract TrustfulOracle is AccessControlEnumerable {
     uint256 public constant MIN_SOURCES = 1;
