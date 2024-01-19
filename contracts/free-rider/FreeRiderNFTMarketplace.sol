@@ -97,10 +97,11 @@ contract FreeRiderNFTMarketplace is ReentrancyGuard {
 
         // transfer from seller to buyer
         DamnValuableNFT _token = token; // cache for gas savings
-        _token.safeTransferFrom(_token.ownerOf(tokenId), msg.sender, tokenId);
+        address owner = _token.ownerOf(tokenId);
+        _token.safeTransferFrom(owner, msg.sender, tokenId);
 
         // pay seller using cached token
-        payable(_token.ownerOf(tokenId)).sendValue(priceToPay);
+        payable(owner).sendValue(priceToPay);
 
         emit NFTBought(msg.sender, tokenId, priceToPay);
     }
