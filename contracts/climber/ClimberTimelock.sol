@@ -86,7 +86,7 @@ contract ClimberTimelock is ClimberTimelockBase {
         bytes32 id = getOperationId(targets, values, dataElements, salt);
 
         for (uint8 i = 0; i < targets.length;) {
-            targets[i].functionCallWithValue(dataElements[i], values[i]);
+            targets[i].functionCallWithValue(dataElements[i], values[i]);// info: didn't follor CEI pattern
             unchecked {
                 ++i;
             }
@@ -99,7 +99,7 @@ contract ClimberTimelock is ClimberTimelockBase {
         operations[id].executed = true;
     }
 
-    function updateDelay(uint64 newDelay) external {
+    function updateDelay(uint64 newDelay) external {// info: no lower bunnd check
         if (msg.sender != address(this)) {
             revert CallerNotTimelock();
         }
