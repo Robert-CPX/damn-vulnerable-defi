@@ -55,17 +55,17 @@ contract WalletDeployer {
     }
 
     // TODO(0xth3g450pt1m1z0r) put some comments
-    function can(address u, address a) public view returns (bool) {
+    function can(address u, address a) public view returns (bool) {// info: check if `u` has certain permissions regarding `a`.
         assembly { 
             let m := sload(0)
             if iszero(extcodesize(m)) {return(0, 0)}
             let p := mload(0x40)
-            mstore(0x40,add(p,0x44))
-            mstore(p,shl(0xe0,0x4538c4eb))
-            mstore(add(p,0x04),u)
-            mstore(add(p,0x24),a)
-            if iszero(staticcall(gas(),m,p,0x44,p,0x20)) {return(0,0)}
-            if and(not(iszero(returndatasize())), iszero(mload(p))) {return(0,0)}
+            mstore(0x40,add(p,0x44))// dynamic memory allocation for 68 bytes more
+            mstore(p,shl(0xe0,0x4538c4eb))// likely sotre a function selector at p,
+            mstore(add(p,0x04),u)//  Stores argument u in the next slot.
+            mstore(add(p,0x24),a) // Stores argument a after u.
+            if iszero(staticcall(gas(),m,p,0x44,p,0x20)) {return(0,0)}// execute selector at p with arguments u and a
+            if and(not(iszero(returndatasize())), iszero(mload(p))) {return(0,0)} // Checks return data; if non-zero but the first 32 bytes are zero, exits.
         }
         return true;
     }
